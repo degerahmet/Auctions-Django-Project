@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if wishlist %}
+
+
+
+
+        <div class="card mb-3" style="max-width: 1080px;">
+            {% for wish in wishlist  %}
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <a href="{% url 'listing' wish.product_id.id %}">
+                        <img src="{{wish.product_id.ImageUrl}}" class="card-img" alt="{{wish.product_id.title}}">
+                    </a>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{wish.product_id.title}}</h5>
+                    <h5 class="card-title">Price : {{wish.product_id.Bid}}$  </h5>
+                    <p class="card-text">{{wish.product_id.description}}</p>
+                    <p class="card-text"><small class="text-muted">{{wish.product_id.createdTime}}</small></p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+
+
+    {% endif %}
+
+
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+    <form action="{% url 'createlisting' %}" method="post">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+        <label for="validationServer01">Title</label>
+        <input type="text" class="form-control" name="title" id="validationServer01" required>
+        </div>
+        <div class="col-md-6 mb-3">
+        <label for="validationServer02">Starting Price</label>
+        <input type="number" class="form-control" name="startingbid" id="validationServer02"  required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+        <label for="validationServer03">Image Url</label>
+        <input type="text" class="form-control" name="imageurl" id="validationServer03" aria-describedby="validationServer03Feedback" required>
+        </div>
+        <div class="col-md-6 mb-3">
+        <label for="exampleFormControlTextarea1">Description</label>
+        <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+    <label for="exampleFormControlSelect1">Category</label>
+    {% for category in categories %}
+    <select class="form-control" name="category" id="exampleFormControlSelect1">
+      <option value="{{category.id}}"> {{ category.name }} </option>
+    </select>
+    {% endfor %}
+    </div>
+    <div class="form-group">
+        <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="invalidCheck3" aria-describedby="invalidCheck3Feedback" required>
+        <label class="form-check-label" for="invalidCheck3">
+            Agree to terms and conditions
+        </label>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="submit">Publish</button>
+</form>
+
+{% endblock %}

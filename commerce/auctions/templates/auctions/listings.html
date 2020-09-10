@@ -1,0 +1,141 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>{{product.title}}</h2>
+        <div class="card mb-3" >
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                  
+                  <img src="{{product.ImageUrl}}" class="card-img" alt="{{product.name}}"> 
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    {% if user.is_authenticated %}
+                    {% if successwish %}
+                      <h6 class="alert alert-light" style="padding-bottom: 10px;text-align: right;">{{successwish}}</h6>
+                    {% endif %}
+                    {% if warningwish %}
+                      <h6 class="alert alert-light" style="padding-bottom: 10px;text-align: right;">{{warningwish}}</h6>
+                    {% endif %}
+                    {% if addedwish %}
+                    <form action="{% url 'removewishlist' product.id %}" method="post">
+                      {%csrf_token%}
+                      <button  type="submit" style="float: right;" class="btn btn-danger">Remove Wishlist</button>
+                    </form>
+                    {% else %}
+                    <form action="{% url 'wishlist' product.id %}" method="post">
+                      {%csrf_token%}
+                    <button  type="submit" style="float: right;" class="btn btn-success">Add to Wishlist</button>
+                    </form>
+                    {% endif %}
+                    
+                    {%else%}
+                    <button type="submit" style="float: right;" class="btn btn-danger" disabled>Add to Wishlist</button>
+                    {% endif %}
+                    {% if product.Bid != 0 %}
+                      <h4 class="card-title" style="text-align: left;">Current Price :  {{product.Bid}}$ <h6 style="padding-left: 5px;padding-bottom: 10px;">Highest Bid from {{ owner.first_name }} {{ owner.last_name}}</h6> </h4>
+                    {%else%}
+                    <h6 class="alert alert-light" style="padding-bottom: 10px;text-align: left;">Nobody else have offer this product</h6>
+                    {% endif %}
+                    <h4 class="card-title" style="text-align: left;">Starting Price : {{product.startingBid}}$ <h6 style="padding-left: 5px;padding-bottom: 90px;">Listed by {{product.seller.first_name}} {{product.seller.last_name}}</h6> </h4>
+                   
+                    <p class="card-text">{{product.description}}</p>
+                    <p class="card-text" style="text-align:right;"><small class="text-muted">Created Time : {{product.createdTime}}</small></p>
+                    
+                    {% if warningmessage %}
+                    <div class="alert alert-danger" role="alert">
+                      {{warningmessage}}
+                    </div>
+                    {% endif %}
+
+                    {% if successmessage %}
+                    <div class="alert alert-success" role="alert">
+                      {{successmessage}}
+                    </div>
+                    {% endif %}
+
+                      
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'bid' product.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group mb-3 col-md-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" >$</span>
+                      </div>
+                      <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" style="border-radius: 5px;margin-left: 5px;" placeholder="Bid" name="bid">
+                      <button type="submit" class="btn btn-success" style="margin-left: 10px;">Bid</button>
+                    </div>
+                    </form>
+                    
+                    {% else %}
+
+                      <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">$</span>
+                            </div>
+                            <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" style="border-radius: 5px;margin-left: 5px;" placeholder="Bid" disabled>
+                            <button type="submit" class="btn btn-success" style="margin-left: 10px;" disabled>Bid</button>
+                        </div>
+
+                    {% endif %}
+                  
+                    
+                  </div>
+                </div>
+              </div>
+        </div>
+
+        
+        {% if user.is_authenticated %}
+            <form action="{% url 'comment' product.id %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input autofocus class="form-control" type="text" name="title" placeholder="Title">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="comment" placeholder="Write your comment">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Submit">
+         
+               
+        {% else %}
+        <form>
+            <fieldset disabled>
+              <div class="form-group">
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="Title">
+              </div>
+              <div class="form-group">
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="Write your comment">
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </fieldset>
+          </form>
+
+        {% endif %}
+
+        {% if comments %}
+            {% for comment in comments %}
+            <div class="card" style="margin-top: 15px; padding: 10px;padding-right: 15px;">
+                <h5 class="card-title">{{comment.commentTitle}}</h5>
+                <div class="card-body">
+                    {{comment.comment}}
+                </div>
+                <h5 class="card-title" style="text-align:right;"><small class="text-muted">{{comment.author.first_name}} {{comment.author.last_name}}</small></h5>
+               
+              </div>
+
+            <!-- <div class="media">
+                <div class="media-body">
+                
+                <p></p>
+                </div>
+            </div> -->
+            {% endfor %}
+        {% else %}
+        {% endif %}
+
+        
+
+       
+
+{% endblock %}

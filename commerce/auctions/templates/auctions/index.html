@@ -1,0 +1,82 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Active Listings</h2>
+    </div>
+
+    {% if products %}
+
+        
+
+        <div class="card mb-3" style="max-width: 1080px;">
+            {% for product in products  %}
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <a href="{% url 'listing' product.id %}">
+                        <img src="{{product.ImageUrl}}" class="card-img" alt="{{product.title}}">
+                    </a>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{product.title}}</h5>
+                    {% if product.Bid != 0 %}
+                    <h5 class="card-title">Price : {{product.Bid}}$  </h5>
+                    {% else %}
+                    <h5 class="card-title">Price : {{product.startingBid}}$  </h5>
+                    {% endif %}
+                    <p class="card-text">{{product.description}}</p>
+                    <p class="card-text"><small class="text-muted">{{product.createdTime}}</small></p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+
+
+        
+
+    {% endif %}
+
+    <!-- TODO
+     <ul>
+         card-img-top
+        <li>Create Listing at Navbar:</li>
+            <ul>    
+            <li>Title</li>
+            <li>Starting Bid</li>
+            <li>Image Url(optional)</li>
+            </ul>
+        <li>Active Listing Page(For in List)</li>
+        <ul>
+            <li>Title</li>
+            <li>Description</li>
+            <li>Current Price</li>
+            <li>Photo if exist</li>
+            <li>Redirect to Listing Page</li>
+        </ul>
+        <li>Listing Page</li>
+        <ul>   
+            <h6>if user sign in our site ;</h6>
+            <li>Add/Remove Watchlist</li>
+            <li>Bid  must be > Current Price -otherwise error- </li>
+            <li>if user owner ; close = True -> -Highest Bid Win- </li>
+            <li>if winner do celebrate</li>
+            <li>users can comment and also comments.display </li>
+        </ul>
+        <li>Watchlist</li>
+        <ul>   
+            <h6>if user sign in ;</h6>
+            <li> watchlist.display=True </li>
+            <li> link to listings </li>
+        </ul>
+        <li>Categories</li>
+        <ul>   
+            <li> categories.display </li>
+            <li> link to specific category </li>
+            <li> for listings in categories </li>
+        </ul>
+        <li>Add Django Admin</li>
+ 
+    </ul> -->
+{% endblock %}
